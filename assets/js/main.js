@@ -1,77 +1,65 @@
-
-$('body').scrollspy({ target: '.navmenu' });
-
-// When we click on the LI
-$("ul.qcontrols li").click(function(){
-  // If this isn't already active
-  if (!$(this).hasClass("active")) {
-    // Remove the class from anything that is active
-    $("ul.qcontrols li.active").removeClass("active");
-    // And make this active
-    $(this).addClass("active");
-  }
-});
+jQuery(document).ready(function($) {
 
 
-//WOW Scroll Spy
-var wow = new WOW({
-    //disabled for mobile
-    mobile: false
-});
-wow.init();
+    /*======= Skillset *=======*/
+    
+    $('.level-bar-inner').css('width', '0');
+    
+    $(window).on('load', function() {
 
-jQuery(document).ready(function( $ ) {
-        $('.circle').circleProgress({
-        value: 0.70,
-        startAngle: 4.75,
-        size: 200,
-        fill: { gradient: ["#FFFFFF"] }
-      });
-        $('.two').circleProgress({
-          value: 0.75,
-        });
-        $('.three').circleProgress({
-          value: 0.50,
-        });
-        $('.four').circleProgress({
-          value: 0.90,
+        $('.level-bar-inner').each(function() {
+        
+            var itemWidth = $(this).data('level');
+            
+            $(this).animate({
+                width: itemWidth
+            }, 800);
+            
         });
 
-   //Clients carousel Slider
-    $('#clients-carousel').owlCarousel({
-        navigation: false, // Show next and prev buttons
-        slideSpeed: 400,
-        paginationSpeed: 800,
-        autoPlay: true,
-        pagination : false,
-        items : 4,
-        itemsCustom : false,
-        itemsDesktop : [1199,4],
-        itemsDesktopSmall : [980,3],
-        itemsTablet: [768,2],
-        itemsTabletSmall: false,
-        itemsMobile : [479,1],
     });
-       $('#menu').click(function(){
-       $('#menu').not(this).removeClass("active");
-       $(this).toggleClass("active");
-      });
+    
+    /* Bootstrap Tooltip for Skillset */
+    $('.level-label').tooltip();
+    
+    
+    /* jQuery RSS - https://github.com/sdepold/jquery-rss */
+    
+    $("#rss-feeds").rss(
+    
+        //Change this to your own rss feeds
+        "http://feeds.feedburner.com/TechCrunch/startups",
+        
+        {
+        // how many entries do you want?
+        // default: 4
+        // valid values: any integer
+        limit: 3,
+        
+        // the effect, which is used to let the entries appear
+        // default: 'show'
+        // valid values: 'show', 'slide', 'slideFast', 'slideSynced', 'slideFastSynced'
+        effect: 'slideFastSynced',
+        
+        // outer template for the html transformation
+        // default: "<ul>{entries}</ul>"
+        // valid values: any string
+        layoutTemplate: "<div class='item'>{entries}</div>",
+        
+        // inner template for each entry
+        // default: '<li><a href="{url}">[{author}@{date}] {title}</a><br/>{shortBodyPlain}</li>'
+        // valid values: any string
+        entryTemplate: '<h3 class="title"><a href="{url}" target="_blank">{title}</a></h3><div><p>{shortBodyPlain}</p><a class="more-link" href="{url}" target="_blank"><i class="fa fa-external-link"></i>Read more</a></div>'
+        
+        }
+    );
+    
+    /* Github Calendar - https://github.com/IonicaBizau/github-calendar */
+    GitHubCalendar("#github-graph", "IonicaBizau");
+    
+    
+    /* Github Activity Feed - https://github.com/caseyscarborough/github-activity */
+    GitHubActivity.feed({ username: "caseyscarborough", selector: "#ghfeed" });
 
-  });
 
-  
-//ScrollTop
-$(function() {
-  $('a[href*=#]:not([href=#])').click(function() {
-    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-      var target = $(this.hash);
-      target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-      if (target.length) {
-        $('html,body').animate({
-          scrollTop: target.offset().top
-        }, 1000);
-        return false;
-      }
-    }
-  });
 });
